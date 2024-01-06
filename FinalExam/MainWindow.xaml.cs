@@ -1,4 +1,10 @@
-﻿using System;
+﻿/* ID: S00233718
+ * Date: 6/1/2024
+ * Desc: Final Exam
+ * GH Link: https://github.com/lyra-school/FinalExam-Y2S1
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
