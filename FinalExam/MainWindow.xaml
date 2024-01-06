@@ -7,6 +7,49 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <ListBox x:Name="incomeList" Grid.Column="1" Grid.Row="1"/>
+        <ListBox x:Name="expenseList" Grid.Column="3" Grid.Row="1"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="0,51,0,0" TextWrapping="Wrap" Text="Income" VerticalAlignment="Top"/>
+        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="66,51,0,0" TextWrapping="Wrap" Text="Expenses" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Total Income" VerticalAlignment="Top"/>
+        <TextBlock x:Name="totalInc" Grid.Column="1" HorizontalAlignment="Left" Margin="142,10,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.362,-0.13"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="0,39,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Current Balance" VerticalAlignment="Top"/>
+        <TextBlock x:Name="currBal" Grid.Column="1" HorizontalAlignment="Left" Margin="142,39,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.873,0.372"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Margin="0,73,0,0"/>
+        <TextBox x:Name="search" Grid.Column="1" HorizontalAlignment="Left" Margin="70,73,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="66,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Total Outgoings" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="outgoings" Grid.Column="3" HorizontalAlignment="Left" Margin="135,10,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Grid Grid.Column="5" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <StackPanel HorizontalAlignment="Right">
+                <TextBox x:Name="name" Width="120" Height="25" Margin="5"/>
+                <DatePicker x:Name="date" Margin="5"/>
+                <TextBox x:Name="amt" Width="120" Height="25" Margin="5"/>
+            </StackPanel>
+            <TextBlock HorizontalAlignment="Left" Margin="16,10,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="16,0,0,0" TextWrapping="Wrap" Text="Date" VerticalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Left" Margin="16,76,0,0" TextWrapping="Wrap" Text="Amount" VerticalAlignment="Top"/>
+            <RadioButton x:Name="incRadio" Content="Income" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" GroupName="radios"/>
+            <RadioButton x:Name="expRadio" Content="Expense" HorizontalAlignment="Left" Margin="111,10,0,0" Grid.Row="1" VerticalAlignment="Top" GroupName="radios"/>
+            <CheckBox x:Name="recur" Content="Recurring" HorizontalAlignment="Left" Margin="10,39,0,0" Grid.Row="1" VerticalAlignment="Top" IsChecked="False"/>
+            <Button x:Name="remove" Content="Remove" HorizontalAlignment="Left" Margin="10,78,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50"/>
+            <Button x:Name="Add" Content="Add" HorizontalAlignment="Left" Margin="133,78,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50"/>
+        </Grid>
     </Grid>
 </Window>
