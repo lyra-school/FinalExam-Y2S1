@@ -6,13 +6,21 @@ using System.Threading.Tasks;
 
 namespace FinalExam
 {
+    /// <summary>
+    /// Enum that stores possible budget type values
+    /// </summary>
     public enum BudgetItemType
     {
         Income,
         Expense
     }
-    public class BudgetItem
+
+    /// <summary>
+    /// Stores all data related to a budget item
+    /// </summary>
+    public class BudgetItem : IComparable<BudgetItem>
     {
+        // Attributes & appropriate getters/setters
         private string _name;
         private decimal _amount;
         private BudgetItemType _itemType;
@@ -47,6 +55,25 @@ namespace FinalExam
         {
             get { return _recurring; }
             set { _recurring = value; }
+        }
+
+        /// <summary>
+        /// Sort by date where later date = closer to the end of the list, and otherwise alphabetically by name
+        /// </summary>
+        /// <param name="other">BudgetItem to compare against</param>
+        /// <returns>Returns an integer (-1, 1, 0) used in list sorting</returns>
+        public int CompareTo(BudgetItem other)
+        {
+            if(this.Date > other.Date)
+            {
+                return 1;
+            } else if(this.Date < other.Date)
+            {
+                return -1;
+            } else
+            {
+                return this.Name.CompareTo(other.Name);
+            }
         }
     }
 }
