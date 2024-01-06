@@ -47,13 +47,72 @@ namespace FinalExam
             _expenses.Add(new BudgetItem() { Name = "Flight", Amount = 100, Date = new DateTime(2024, 1, 5), ItemType = BudgetItemType.Expense, Recurring = false });
             _expenses.Add(new BudgetItem() { Name = "Netflix", Amount = 10, Date = new DateTime(2024, 1, 15), ItemType = BudgetItemType.Expense, Recurring = true });
             _expenses.Add(new BudgetItem() { Name = "Spotify", Amount = 8, Date = new DateTime(2024, 1, 20), ItemType = BudgetItemType.Expense, Recurring = true });
+
+            _income.Sort();
+            _expenses.Sort();
         }
 
+        /// <summary>
+        /// Populates listboxes with relevant lists on window load
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataCreator();
             incomeList.ItemsSource = _income;
             expenseList.ItemsSource = _expenses;
+        }
+
+        /// <summary>
+        /// Creates a new budget item dependent on the user input
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void add_Click(object sender, RoutedEventArgs e)
+        {
+            // Date, Name, Amount and at least one radio button must be selected/have input. Function returns if that's not the case
+            if(date.SelectedDate == null || name.Text == null || amt.Text == null || (incRadio.IsChecked == false && expRadio.IsChecked == false))
+            {
+                return;
+            }
+
+            // if Amount can't be parsed to decimal, function returns
+            decimal amtInDec = 0;
+            if(!decimal.TryParse(amt.Text, out amtInDec))
+            {
+                return;
+            }
+
+            // create the new item
+            BudgetItem newItem = new BudgetItem() { Name = name.Text, Amount = amtInDec, Date = (DateTime)date.SelectedDate};
+
+            // assign recurrence status depending on checkbox
+            if(recur.IsChecked == true)
+            {
+                newItem.Recurring = true;
+            } else
+            {
+                newItem.Recurring = false;
+            }
+
+            // assign enum depending on radio button selected
+            // finally, add item to an appropriate list, sort, and refresh display
+            if(incRadio.IsChecked == true)
+            {
+                newItem.ItemType = BudgetItemType.Income;
+                _income.Add(newItem);
+                _income.Sort();
+                incomeList.ItemsSource = null;
+                incomeList.ItemsSource = _income;
+            } else
+            {
+                newItem.ItemType = BudgetItemType.Expense;
+                _expenses.Add(newItem);
+                _expenses.Sort();
+                expenseList.ItemsSource = null;
+                expenseList.ItemsSource = _expenses;
+            }
         }
     }
 }
