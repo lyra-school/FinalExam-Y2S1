@@ -57,6 +57,12 @@ namespace FinalExam
             set { _recurring = value; }
         }
 
+        // Constructor
+        public BudgetItem()
+        {
+
+        }
+
         /// <summary>
         /// Sort by date where later date = closer to the end of the list, and otherwise alphabetically by name
         /// </summary>
@@ -74,6 +80,25 @@ namespace FinalExam
             {
                 return this.Name.CompareTo(other.Name);
             }
+        }
+
+        /// <summary>
+        /// String representation of a BudgetItem
+        /// </summary>
+        /// <returns>String representation of a BudgetItem</returns>
+        public override string ToString()
+        {
+            // Text changes depending on value in _recurring
+            string recurrence;
+            if(_recurring == false)
+            {
+                recurrence = "One-off";
+            } else
+            {
+                recurrence = "Recurring";
+            }
+
+            return $"{Date.Day} : {Name} €{Amount} - ({recurrence})";
         }
     }
 }
