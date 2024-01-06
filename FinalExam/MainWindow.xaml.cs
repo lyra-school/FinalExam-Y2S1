@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -99,22 +100,37 @@ namespace FinalExam
 
             // assign enum depending on radio button selected
             // finally, add item to an appropriate list, sort, update totals, and refresh display
+            // respects user search
             if(incRadio.IsChecked == true)
             {
                 newItem.ItemType = BudgetItemType.Income;
                 _income.Add(newItem);
                 _income.Sort();
                 BalanceUpdater();
-                incomeList.ItemsSource = null;
-                incomeList.ItemsSource = _income;
+                if (incomeList.ItemsSource == _income)
+                {
+                    incomeList.ItemsSource = null;
+                    incomeList.ItemsSource = _income;
+                }
+                else
+                {
+                    RegexFilter();
+                }
             } else
             {
                 newItem.ItemType = BudgetItemType.Expense;
                 _expenses.Add(newItem);
                 _expenses.Sort();
                 BalanceUpdater();
-                expenseList.ItemsSource = null;
-                expenseList.ItemsSource = _expenses;
+                if (expenseList.ItemsSource == _expenses)
+                {
+                    expenseList.ItemsSource = null;
+                    expenseList.ItemsSource = _expenses;
+                }
+                else
+                {
+                    RegexFilter();
+                }
             }
         }
 
@@ -132,6 +148,7 @@ namespace FinalExam
             }
 
             // get selected item, remove it from appropriate list, sort, update totals, and refresh display
+            // respects user search
             BudgetItem selection;
             if(incomeList.SelectedItem != null)
             {
@@ -139,16 +156,28 @@ namespace FinalExam
                 _income.Remove(selection);
                 _income.Sort();
                 BalanceUpdater();
-                incomeList.ItemsSource = null;
-                incomeList.ItemsSource = _income;
+                if(incomeList.ItemsSource == _income)
+                {
+                    incomeList.ItemsSource = null;
+                    incomeList.ItemsSource = _income;
+                } else
+                {
+                    RegexFilter();
+                }
             } else
             {
                 selection = expenseList.SelectedItem as BudgetItem;
                 _expenses.Remove(selection);
                 _expenses.Sort();
                 BalanceUpdater();
-                expenseList.ItemsSource = null;
-                expenseList.ItemsSource = _expenses;
+                if(expenseList.ItemsSource == _expenses)
+                {
+                    expenseList.ItemsSource = null;
+                    expenseList.ItemsSource = _expenses;
+                } else
+                {
+                    RegexFilter();
+                }
             }
         }
 
@@ -178,6 +207,65 @@ namespace FinalExam
             totalInc.Text = $"{inputSum:c}";
             outgoings.Text = $"{outputSum:c}";
             currBal.Text = $"{difference:c}";
+        }
+
+        /// <summary>
+        /// Basic search functionality that changes displayed budget items depending on user input in
+        /// the search bar -- event listener for changes in the search bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RegexFilter();
+        }
+
+        /// <summary>
+        /// Basic search functionality that changes displayed budget items depending on user input in
+        /// the search bar -- the main functionality needs to be reused elsewhere so it's separate
+        /// from the event listener
+        /// </summary>
+        private void RegexFilter()
+        {
+            // if the search box is clear, use default lists
+            if (search.Text == null)
+            {
+                incomeList.ItemsSource = _income;
+                expenseList.ItemsSource = _expenses;
+                return;
+            }
+
+            // build a simple regex out of user input that ignores case
+            string regexString = search.Text;
+            Regex regex = new Regex(regexString, RegexOptions.IgnoreCase);
+
+            // build new lists for display purposes
+            List<BudgetItem> filterInc = new List<BudgetItem>();
+            List<BudgetItem> filterExp = new List<BudgetItem>();
+
+            // display matching items in incomes box
+            foreach (BudgetItem item in _income)
+            {
+                MatchCollection match = regex.Matches(item.ToString());
+                if (match.Count > 0)
+                {
+                    filterInc.Add(item);
+                }
+            }
+
+            // display matching items in expenses box
+            foreach (BudgetItem item in _expenses)
+            {
+                MatchCollection match = regex.Matches(item.ToString());
+                if (match.Count > 0)
+                {
+                    filterExp.Add(item);
+                }
+            }
+
+            // change list sources accordingly
+            incomeList.ItemsSource = filterInc;
+            expenseList.ItemsSource = filterExp;
         }
     }
 }
