@@ -53,7 +53,7 @@ namespace FinalExam
         }
 
         /// <summary>
-        /// Populates listboxes with relevant lists on window load
+        /// Populates listboxes with relevant lists on window load, as well as current totals
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -62,6 +62,7 @@ namespace FinalExam
             DataCreator();
             incomeList.ItemsSource = _income;
             expenseList.ItemsSource = _expenses;
+            BalanceUpdater();
         }
 
         /// <summary>
@@ -97,12 +98,13 @@ namespace FinalExam
             }
 
             // assign enum depending on radio button selected
-            // finally, add item to an appropriate list, sort, and refresh display
+            // finally, add item to an appropriate list, sort, update totals, and refresh display
             if(incRadio.IsChecked == true)
             {
                 newItem.ItemType = BudgetItemType.Income;
                 _income.Add(newItem);
                 _income.Sort();
+                BalanceUpdater();
                 incomeList.ItemsSource = null;
                 incomeList.ItemsSource = _income;
             } else
@@ -110,11 +112,17 @@ namespace FinalExam
                 newItem.ItemType = BudgetItemType.Expense;
                 _expenses.Add(newItem);
                 _expenses.Sort();
+                BalanceUpdater();
                 expenseList.ItemsSource = null;
                 expenseList.ItemsSource = _expenses;
             }
         }
 
+        /// <summary>
+        /// Removes selected item from either list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void remove_Click(object sender, RoutedEventArgs e)
         {
             // if nothing is selected, function returns
@@ -123,13 +131,14 @@ namespace FinalExam
                 return;
             }
 
-            // get selected item, remove it from appropriate list, sort, and refresh display
+            // get selected item, remove it from appropriate list, sort, update totals, and refresh display
             BudgetItem selection;
             if(incomeList.SelectedItem != null)
             {
                 selection = incomeList.SelectedItem as BudgetItem;
                 _income.Remove(selection);
                 _income.Sort();
+                BalanceUpdater();
                 incomeList.ItemsSource = null;
                 incomeList.ItemsSource = _income;
             } else
@@ -137,9 +146,38 @@ namespace FinalExam
                 selection = expenseList.SelectedItem as BudgetItem;
                 _expenses.Remove(selection);
                 _expenses.Sort();
+                BalanceUpdater();
                 expenseList.ItemsSource = null;
                 expenseList.ItemsSource = _expenses;
             }
+        }
+
+        /// <summary>
+        /// Changes display of total money earned/lost/etc in relevant textblocks
+        /// </summary>
+        private void BalanceUpdater()
+        {
+            // get total decimal value in income list, default to 0 if none
+            decimal inputSum = 0;
+            foreach(BudgetItem item in _income)
+            {
+                inputSum += item.Amount;
+            }
+
+            // get total decimal value in expense list, default to 0 if none
+            decimal outputSum = 0;
+            foreach(BudgetItem item in _expenses)
+            {
+                outputSum += item.Amount;
+            }
+
+            // get difference between the two
+            decimal difference = inputSum - outputSum;
+
+            // change textblocks accordingly
+            totalInc.Text = $"{inputSum:c}";
+            outgoings.Text = $"{outputSum:c}";
+            currBal.Text = $"{difference:c}";
         }
     }
 }

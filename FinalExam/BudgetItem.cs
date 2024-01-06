@@ -98,7 +98,7 @@ namespace FinalExam
                 recurrence = "Recurring";
             }
 
-            return $"{Date.Day} : {Name} €{Amount} - ({recurrence})";
+            return $"{Date.Day} : {Name} {Amount:c} - ({recurrence})";
         }
     }
 }
