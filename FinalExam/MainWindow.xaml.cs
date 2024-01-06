@@ -114,5 +114,32 @@ namespace FinalExam
                 expenseList.ItemsSource = _expenses;
             }
         }
+
+        private void remove_Click(object sender, RoutedEventArgs e)
+        {
+            // if nothing is selected, function returns
+            if(incomeList.SelectedItem == null && expenseList.SelectedItem == null)
+            {
+                return;
+            }
+
+            // get selected item, remove it from appropriate list, sort, and refresh display
+            BudgetItem selection;
+            if(incomeList.SelectedItem != null)
+            {
+                selection = incomeList.SelectedItem as BudgetItem;
+                _income.Remove(selection);
+                _income.Sort();
+                incomeList.ItemsSource = null;
+                incomeList.ItemsSource = _income;
+            } else
+            {
+                selection = expenseList.SelectedItem as BudgetItem;
+                _expenses.Remove(selection);
+                _expenses.Sort();
+                expenseList.ItemsSource = null;
+                expenseList.ItemsSource = _expenses;
+            }
+        }
     }
 }

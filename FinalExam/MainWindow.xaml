@@ -48,7 +48,7 @@
             <RadioButton x:Name="incRadio" Content="Income" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" GroupName="radios"/>
             <RadioButton x:Name="expRadio" Content="Expense" HorizontalAlignment="Left" Margin="111,10,0,0" Grid.Row="1" VerticalAlignment="Top" GroupName="radios"/>
             <CheckBox x:Name="recur" Content="Recurring" HorizontalAlignment="Left" Margin="10,39,0,0" Grid.Row="1" VerticalAlignment="Top" IsChecked="False"/>
-            <Button x:Name="remove" Content="Remove" HorizontalAlignment="Left" Margin="10,78,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50"/>
+            <Button x:Name="remove" Content="Remove" HorizontalAlignment="Left" Margin="10,78,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Click="remove_Click"/>
             <Button x:Name="add" Content="Add" HorizontalAlignment="Left" Margin="133,78,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Click="add_Click"/>
         </Grid>
     </Grid>
